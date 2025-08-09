@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>مشاريعي الشخصية</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f9f9f9;
+            color: #333;
+            direction: rtl;
+        }
+        header {
+            background: #005f73;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .intro {
+            max-width: 700px;
+            margin: 20px auto;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 8px 12px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .projects-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .project-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .project-content {
+            padding: 15px;
+        }
+        .project-title {
+            font-size: 1.2rem;
+            margin: 0 0 8px;
+            color: #0077b6;
+        }
+        .project-desc {
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        .project-meta {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .project-link {
+            display: inline-block;
+            padding: 6px 10px;
+            background: #00b4d8;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        footer {
+            background: #005f73;
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            margin-top: 40px;
+        }
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            padding: 40px 10px;
+        }
+        .modal-content {
+            background: white;
+            margin: auto;
+            padding: 20px;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+            direction: rtl;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 1.5rem;
+            color: #444;
+            cursor: pointer;
+        }
+        .modal-content img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            color: #0077b6;
+        }
+        .modal-content p {
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        /* Responsive */
+        @media(max-width: 600px) {
+            .projects-list {
+                grid-template-columns: 1fr;
+            }
+            .search-container input {
+                width: 95%;
+            }
+        }
+        /* Form styles */
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+            direction: rtl;
+        }
+        form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        form button {
+            background: #0077b6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        form button:hover {
+            background: #005f73;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>مشاريعي الشخصية</h1>
+</header>
+
+<section class="intro">
+    <p>مرحباً، أنا مطور برمجيات أحب أشارك مشاريعي وتجاربي في عالم البرمجة. استعرض المشاريع أدناه، وإذا حبيت تتواصل معي، استخدم نموذج الاتصال.</p>
+</section>
+
+<main>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن مشروع..." oninput="filterProjects()" />
+    </div>
+
+    <div class="projects-list" id="projectsList">
+        <!-- مشاريع ستتم إضافتها من الجافاسكريبت -->
+    </div>
+
+    <form action="https://formspree.io/f/yourformid" method="POST">
+        <h2>تواصل معي</h2>
+        <label for="name">الاسم:</label>
+        <input type="text" id="name" name="name" required />
+        <label for="email">البريد الإلكتروني:</label>
+        <input type="email" id="email" name="_replyto" required />
+        <label for="message">رسالتك:</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        <button type="submit">إرسال</button>
+    </form>
+</main>
+
+<footer>
+    <div class="social-icons">
+        <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+    <p>© 2025 كل الحقوق محفوظة</p>
+</footer>
+
+<!-- نافذة التفاصيل -->
+<div id="projectModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <img id="modalImage" src="" alt="صورة المشروع" />
+        <p id="modalDesc"></p>
+        <p><strong>اللغة/التقنيات:</strong> <span id="modalTech"></span></p>
+        <p><strong>الحالة:</strong> <span id="modalStatus"></span></p>
+        <p><strong>رابط المشروع على GitHub:</strong> <a id="modalLink" href="#" target="_blank">زيارة المستودع</a></p>
+    </div>
+</div>
+
+<script>
+    // بيانات المشاريع (تقدر تضيف أو تعدل هنا)
+    const projects = [
+        {
+            title: "مشروع الموقع الشخصي",
+            description: "موقع بسيط لعرض معلوماتي ومشاريعي الشخصية.",
+            image: "https://via.placeholder.com/400x200?text=مشروع+الموقع+الشخصي",
+            tech: "HTML, CSS, JavaScript",
+            status: "مكتمل",
+            github: "https://github.com/yourusername/personal-website"
+        },
+        {
+            title: "تطبيق المهام",
+            description: "تطبيق لإدارة المهام اليومية مع إمكانية التذكير.",
+            image: "https://via.placeholder.com/400x200?text=تطبيق+المهام",
+            tech: "React, Node.js",
+            status: "قيد التطوير",
+            github: "https://github.com/yourusername/task-app"
+        },
+        {
+            title: "مكتبة الصور",
+            description: "مكتبة لعرض الصور مع تصنيف وفرز سهل.",
+            image: "https://via.placeholder.com/400x200?text=مكتبة+الصور",
+            tech: "Vue.js, Firebase",
+            status: "مكتمل",
+            github: "https://github.com/yourusername/photo-library"
+        }
+    ];
+
+    const projectsList = document.getElementById('projectsList');
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalTech = document.getElementById('modalTech');
+    const modalStatus = document.getElementById('modalStatus');
+    const modalLink = document.getElementById('modalLink');
+
+    function displayProjects(list) {
+        projectsList.innerHTML = "";
+        if(list.length === 0) {
+            projectsList.innerHTML = "<p>لم يتم العثور على مشاريع.</p>";
+            return;
+        }
+        list.forEach((p, i) => {
+            const card = document.createElement('div');
+            card.className = "project-card";
+            card.innerHTML = `
+                <img class="project-image" src="${p.image}" alt="${p.title}" />
+                <div class="project-content">
+                    <h3 class="project-title">${p.title}</h3>
+                    <p class="project-desc">${p.description}</p>
+                    <p class="project-meta"><strong>التقنيات:</strong> ${p.tech}</p>
+                    <p class="project-meta"><strong>الحالة:</strong> ${p.status}</p>
+                    <a class="project-link" href="${p.github}" target="_blank" onclick="event.stopPropagation()">رؤية المشروع</a>
+                </div>
+            `;
+            card.onclick = () => openModal(i);
+            projectsList.appendChild(card);
+        });
+    }
+
+    function openModal(index) {
+        const p = projects[index];
+        modalTitle.textContent = p.title;
+        modalImage.src = p.image;
+        modalDesc.textContent = p.description;
+        modalTech.textContent = p.tech;
+        modalStatus.textContent = p.status;
+        modalLink.href = p.github;
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    // إغلاق المودال عند الضغط خارج المحتوى
+    window.onclick = function(event) {
+        if(event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // بحث مبسط حسب اسم المشروع أو التقنية
+    function filterProjects() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = projects.filter(p => 
+            p.title.toLowerCase().includes(query) || 
+            p.tech.toLowerCase().includes(query)
+        );
+        displayProjects(filtered);
+    }
+
+    // عرض المشاريع عند تحميل الصفحة
+    displayProjects(projects);
+</script>
+
+</body>
+</html>
